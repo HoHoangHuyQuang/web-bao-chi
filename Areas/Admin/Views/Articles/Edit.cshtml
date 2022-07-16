@@ -1,0 +1,112 @@
+﻿@model NewsApp.Areas.Admin.Models.ArticleViewsModel
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h1>Edit</h1>
+
+<h4>Article</h4>
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <form enctype="multipart/form-data" method="post" asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="ArticleID" id="ArtID"/>
+            <div class="form-group">
+                <label asp-for="ArticleTitle" class="control-label"></label>
+                <input asp-for="ArticleTitle" class="form-control" />
+                <span asp-validation-for="ArticleTitle" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ArticleDescription" class="control-label"></label>
+                <input asp-for="ArticleDescription" class="form-control" />
+                <span asp-validation-for="ArticleDescription" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ArticleContent" class="control-label"></label>
+                <textarea asp-for="ArticleContent" class="form-control" id="contentField"></textarea>
+                <span asp-validation-for="ArticleContent" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Image" class="control-label"></label>
+                <div class="custom-file">
+                     <input asp-for="Image" type="file"  accept=".jpg, .png, .jpeg, .gif, .bmp, .tif, .tiff|image/*" id="customFile">
+                    <label class="custom-file-label" for="customFile">Choose file</label>
+                </div>
+                <span asp-validation-for="Image" class="text-danger"></span>
+                <div>
+                    <img src="@ViewBag.Image" style="width: 200px; height:150px;" id="image_upload_preview" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="PublishTime" class="control-label"></label>
+                <input asp-for="PublishTime" class="form-control" />
+                <span asp-validation-for="PublishTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ViewsCount" class="control-label"></label>
+                <input asp-for="ViewsCount" class="form-control" />
+                <span asp-validation-for="ViewsCount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AuthorName" class="control-label"></label>
+                <input asp-for="AuthorName" class="form-control" />
+                <span asp-validation-for="AuthorName" class="text-danger"></span>
+            </div>
+             <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <table>
+                        <tr>
+                            @{
+                                int cnt = 0;
+                                List<NewsApp.Areas.Admin.Models.AssignedCategoryData> cates = ViewBag.Categories;
+                                if (cates != null)
+                                {
+                                    foreach (var item in cates)
+                                    {
+                                        if (cnt++ % 3 == 0)
+                                        {
+                                            @:</tr><tr>
+                                        }
+                                        @:<td>
+                                <input type="checkbox"
+                                        name="selectedCategories"                               
+                                        value="@item.CategoryID"
+                                        @(Html.Raw(item.IsAssigned ? "checked=\"checked\"" : "")) />
+                                        @item.CategoryName
+                                        @:</td>
+                                    }
+                                }
+                                @:</tr>
+
+                }
+                  </table>
+                </div>      
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section scripts{        
+<script src="~/ckeditor/ckeditor.js"></script>
+<script src="~/js/config.js"></script>
+    <script>
+        
+        var editor = CKEDITOR.replace('contentField', {
+            customConfig: "@Url.Content("~/js/config.js")"
+        });
+    
+    </script>
+
+  
+}
+

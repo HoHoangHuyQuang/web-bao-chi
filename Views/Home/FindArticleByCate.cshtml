@@ -1,0 +1,85 @@
+﻿@using NewsApp.Models
+@using NewsApp.ViewModels
+@model IPagedList<NewsApp.Models.Article>
+@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+@using X.PagedList.Web.Common
+@{
+    Category tag = ViewBag.Cate;
+    ViewData["Title"] = tag.CategoryName;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@await Component.InvokeAsync("HighLight")
+
+
+
+<div class="column-wrap">
+
+    <div class="column-timeline">
+
+        <div class="zone zone--timeline">
+            <div class="zone__content">
+
+
+                @{
+                    if(Model != null)
+                    {
+                        foreach (var item in Model)
+                        {
+                            <article class="story story--left story--border">
+                                <figure class="story__thumb">
+                                    <a href="/doc/@StaticMethods.LoaiDau(item.ArticleTitle)/@item.ArticleID" title="@item.ArticleTitle">
+                                        <img src="@StaticMethods.DisplayImage(item.ImageUrl)" class="img-fluid">
+                                    </a>
+                                </figure>
+                                <div class="story__header">
+                                    <h3 class="story__title"><a href="/doc/@StaticMethods.LoaiDau(item.ArticleTitle)/@item.ArticleID">@item.ArticleTitle</a></h3>
+                                    <div class="story__meta">
+                                        @item.PublishTime.ToString("dd-MM-yyy")
+                                    </div>
+                                </div>
+                            </article>
+                        }
+                    }
+                    else
+                    {
+                        <article class="story story--left story--border">
+                                <figure class="story__thumb">
+                                    <a href="#">
+                                        <img src="" class="img-fluid">
+                                    </a>
+                                </figure>
+                                <div class="story__header">
+                                    <h3 class="story__title"><a href="#"></a></h3>
+                                    <div class="story__meta">
+                                        
+                                    </div>
+                                </div>
+                            </article>
+                    }
+                }
+
+            </div>
+        </div>
+
+
+
+
+    </div>
+</div>
+
+
+@Html.PagedListPager( Model, page => Url.Action("Index", new {
+                                        page,sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter
+                        }),
+                     new PagedListRenderOptions{
+                        PageClasses = new string[] { "page-link" },
+                        UlElementClasses = new string[] { "pagination" },
+                        LiElementClasses = new string[] { "page-item" },
+                        DisplayItemSliceAndTotal = false,
+                        DisplayLinkToIndividualPages = false,
+				       	DisplayPageCountAndCurrentLocation = true
+
+
+})

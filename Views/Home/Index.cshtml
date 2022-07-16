@@ -1,0 +1,139 @@
+﻿@using Microsoft.AspNetCore.Http;
+@using NewsApp.ViewModels
+@using NewsApp.Models
+@model IEnumerable<Article>
+
+@{
+    ViewData["Title"] = "Home";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+
+    Dictionary<Category, IList<Article>> cate_dic = ViewBag.SideCol;
+}
+
+@await Component.InvokeAsync("HighLight")
+@*end highlight*@
+
+<div class="column-main">
+    <div class="column-timeline">
+        <div class="zone zone--timeline">
+            <div class="zone__content">
+                @{
+                    if (Model != null)
+                    {
+                        foreach (var item in Model)
+                        {
+                            <article class="story story--left story--border">
+                                <figure class="story__thumb">
+                                    <a href="/doc/@StaticMethods.LoaiDau(item.ArticleTitle)/@item.ArticleID" title="@item.ArticleTitle">
+                                        <img src="@StaticMethods.DisplayImage(item.ImageUrl)" class="img-fluid">
+                                    </a>
+                                </figure>
+                                <div class="story__header">
+                                    <h3 class="story__title"><a href="/doc/@StaticMethods.LoaiDau(item.ArticleTitle)/@item.ArticleID">@item.ArticleTitle</a></h3>
+                                    <div class="story__meta">
+                                        @item.PublishTime.ToString("dd-MM-yyy")
+                                    </div>
+                                </div>
+                            </article>
+
+                        }
+                    }
+
+
+                }
+
+
+
+            </div>
+        </div>
+
+    </div>
+    <div class="column-aside">
+
+        @* <section class="zone">
+            <header class="zone__header">
+            <h2 class="zone__title"><a href="/danh-muc/su-kien/C0002" title="Sự kiện">Sự kiện</a></h2>
+            </header>
+            <div class="zone__content">
+            @{
+            if (sukien != null)
+            {
+            <article class="story story--border">
+            <figure class="story__thumb">
+            <a href="/doc/@StaticMethods.LoaiDau(sukien[0].ArticleTitle)/@sukien[0].ArticleID" title="@sukien[0].ArticleTitle">
+            <img src="@StaticMethods.DisplayImage(sukien[0].ImageUrl)" alt="" class="img-fluid">
+            </a>
+            </figure>
+            <div class="story__header">
+            <h3 class="story__title">
+            <a href="/doc/@StaticMethods.LoaiDau(sukien[0].ArticleTitle)/@sukien[0].ArticleID" title="@sukien[0].ArticleTitle">
+            @sukien[0].ArticleTitle
+            </a>
+            </h3>
+            </div>
+            </article>
+            @foreach (var item in sukien.Skip(1))
+            {
+            <article class="story story--border">
+            <div class="story__header">
+            <h3 class="story__title"><a href="/doc/@StaticMethods.LoaiDau(item.ArticleTitle)/@item.ArticleID" title="@sukien[1].ArticleTitle">@item.ArticleTitle</a></h3>
+            </div>
+            </article>
+            }
+            }
+
+            }
+
+            </div>
+            </section>*@
+        @{
+            if (cate_dic != null)
+            {
+                foreach (KeyValuePair<Category, IList<Article>> item in cate_dic)
+                {
+                    <section class="zone">
+                        <header class="zone__header">
+                            <h2 class="zone__title"><a href="/danh-muc/@StaticMethods.LoaiDau(item.Key.CategoryName)/@item.Key.CategoryID" title="@item.Key.CategoryName">@item.Key.CategoryName</a></h2>
+                        </header>
+                        <div class="zone__content">
+                            @if (item.Value.Count >0)
+                            {
+                                <article class="story story--border">
+                                    <figure class="story__thumb">
+                                        <a href="/doc/@StaticMethods.LoaiDau(item.Value[0].ArticleTitle)/@item.Value[0].ArticleID" title="@item.Value[0].ArticleTitle">
+                                            <img src="@StaticMethods.DisplayImage(item.Value[0].ImageUrl)" alt="" class="img-fluid">
+                                        </a>
+                                    </figure>
+                                    <div class="story__header">
+                                        <h3 class="story__title">
+                                            <a href="/doc/@StaticMethods.LoaiDau(item.Value[0].ArticleTitle)/@item.Value[0].ArticleID" title="@item.Value[0].ArticleTitle">
+                                                @item.Value[0].ArticleTitle
+                                            </a>
+                                        </h3>
+                                    </div>
+                                </article>
+                                @foreach (var arti in item.Value.Skip(1))
+                                {
+                                    <article class="story story--border">
+                                        <div class="story__header">
+                                            <h3 class="story__title"><a href="/doc/@StaticMethods.LoaiDau(arti.ArticleTitle)/@arti.ArticleID" title="@arti.ArticleTitle">@arti.ArticleTitle</a></h3>
+                                        </div>
+                                    </article>
+                                }
+                            }
+                        </div>
+                    </section>
+                }
+
+            }
+
+        }
+
+
+
+
+        @*end newest*@
+
+    </div>
+</div>
+

@@ -1,0 +1,148 @@
+﻿@using Microsoft.AspNetCore.Http;
+@using NewsApp.ViewModels
+@using NewsApp.Models
+@model IEnumerable<Article>
+
+@{
+    List<Article> lst_Slide = Model.Take(2).ToList();
+    Article _vertical = Model.Skip(2).Take(1).FirstOrDefault();
+    List<Article> lst_top = Model.Skip(3).ToList();
+}
+
+<section class="zone zone--highlight zone--slider">
+    <div class="zone__header">
+    </div>
+    <div class="zone__content">
+        <div class="highlight-zone">
+            <div class="slider-wrap">
+                <div class="bx-wrapper" style="max-width: 100%; margin: 0px auto;">
+                    <div class="bx-viewport" style="width: 100%; overflow: hidden; position: relative; height: 456.362px;">
+                        <div class="bx-wrapper" style="max-width: 100%; margin: 0px auto;">
+                            <div class="bx-viewport" style="width: 100%; overflow: hidden; position: relative; height: 456.362px;">
+                                <div class="slider" style="width: 615%; position: relative; transition-duration: 0.5s; transform: translateX(-1613.81px);">
+
+                                    @{
+                                        if(lst_Slide != null)
+                                        {
+                                            foreach (var item in lst_Slide)
+                                            {
+                                                <article class="story story--featured" style="float: left; list-style: none; position: relative; width: 537.938px;">
+                                                    <figure class="story__thumb">
+                                                        <a href="/doc/@StaticMethods.LoaiDau(item.ArticleTitle)/@item.ArticleID" title="@item.ArticleTitle">
+                                                            <img src="@StaticMethods.DisplayImage(item.ImageUrl)" class="img-fluid">
+                                                        </a>
+                                                    </figure>
+                                                    <div class="story__header">
+                                                        <h3 class="story__title"><a href="/doc/@StaticMethods.LoaiDau(item.ArticleTitle)/@item.ArticleID">@item.ArticleTitle</a></h3>
+                                                        <div class="story__summary">
+                                                            @item.ArticleDescription
+                                                        </div>
+                                                    </div>
+                                                </article>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <article class="story story--featured" style="float: left; list-style: none; position: relative; width: 537.938px;">
+                                                <figure class="story__thumb">
+                                                    <a href="#">
+                                                        <img src="" class="img-fluid">
+                                                    </a>
+                                                </figure>
+                                                <div class="story__header">
+                                                    <h3 class="story__title"><a href="#"></a></h3>
+                                                    <div class="story__summary">
+                                                    </div>
+                                                </div>
+                                            </article>
+                                        }
+                                    }
+                                </div>
+                            </div><div class="bx-controls"></div>
+                        </div>
+                    </div><div class="bx-controls"></div>
+                </div>
+                <div class="slider-control">
+                    <div class="selector slider-prev" id="highlight-prev"><i class="fa fa-angle-left"></i><a class="bx-prev" href="https://ttbc-hcm.gov.vn/"></a><a class="bx-prev" href=""></a></div>
+                    <div class="selector slider-next" id="highlight-next"><i class="fa fa-angle-right"></i><a class="bx-next" href="https://ttbc-hcm.gov.vn/"></a><a class="bx-next" href=""></a></div>
+                </div>
+            </div>
+
+            @{
+                if (_vertical != null)
+                {
+                    <article class="story story--vertical">
+                        <figure class="story__thumb">
+                            <a href="/doc/@StaticMethods.LoaiDau(_vertical.ArticleTitle)/@_vertical.ArticleID" title="@_vertical.ArticleTitle">
+                                <img src="@StaticMethods.DisplayImage(_vertical.ImageUrl)" class="img-fluid">
+                            </a>
+                        </figure>
+                        <div class="story__header">
+                            <h3 class="story__title"><a href="/doc/@StaticMethods.LoaiDau(_vertical.ArticleTitle)/@_vertical.ArticleID">@_vertical.ArticleTitle</a></h3>
+                        </div>
+                    </article>
+                }
+                else
+                {
+                    <article class="story story--vertical">
+                        <figure class="story__thumb">
+                            <a href="#">
+                                <img src="" class="img-fluid">
+                            </a>
+                        </figure>
+                        <div class="story__header">
+                            <h3 class="story__title"><a href="#"></a></h3>
+                        </div>
+                    </article>
+                }
+            }
+
+
+
+        </div>
+        <div class="row top-stories">
+            
+            @{
+                if(lst_top != null)
+                {
+                    foreach (var item in lst_top)
+                    {
+                        <div class="col-12 col-md-4">
+                            <article class="story">
+                                <figure class="story__thumb">
+                                    <a href="/doc/@StaticMethods.LoaiDau(item.ArticleTitle)/@item.ArticleID" title="@item.ArticleTitle">
+                                        <img src="@StaticMethods.DisplayImage(item.ImageUrl)" class="img-fluid">
+                                    </a>
+                                </figure>
+                                <div class="story__header">
+                                    <h3 class="story__title"><a href="/doc/@StaticMethods.LoaiDau(item.ArticleTitle)/@item.ArticleID">@item.ArticleTitle</a></h3>
+                                </div>
+                            </article>
+                        </div>
+                    }
+                
+                }
+                else
+                {
+                    <div class="col-12 col-md-4">
+                            <article class="story">
+                                <figure class="story__thumb">
+                                    <a href="#">
+                                        <img src="" class="img-fluid">
+                                    </a>
+                                </figure>
+                                <div class="story__header">
+                                    <h3 class="story__title"><a href="#"></a></h3>
+                                </div>
+                            </article>
+                        </div>
+                }
+            }
+
+
+
+
+        </div>
+    </div>
+</section>
+

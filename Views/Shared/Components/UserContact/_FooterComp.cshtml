@@ -1,0 +1,69 @@
+﻿@model NewsApp.Models.Contact
+
+<footer class="site-footer" id="site-footer">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="logo">
+                <a href="https://ttbc-hcm.gov.vn/" title="Trung tâm báo chí TP.Hồ Chí Minh" class="float-left mr-2">
+                    <img class="img-fluid" src="./Images/_Base/logo.png" alt="Trung tâm báo chí TP.Hồ Chí Minh" title="Trung tâm báo chí TP.Hồ Chí Minh" style="max-width: 3em;">
+                </a>
+                <p>
+                    <a href="https://ttbc-hcm.gov.vn/" title="Trung tâm báo chí TP.Hồ Chí Minh">
+                        <b class="text-primary">TRUNG TÂM BÁO CHÍ THÀNH PHỐ HỒ CHÍ MINH</b><br>
+                        <span class="text-muted">HOCHIMINH CITY MEDIA CENTER (HMC)</span>
+                    </a>
+                </p>
+            </div>
+
+            <div class="site-footer__info mt-4">
+                <p class="text-wrap">
+                    <span class="fa fa-building"></span>
+                    <span class="text">255 Trần Hưng Đạo, Quận 1, TP.Hồ Chí Minh</span>
+                </p>
+                <p class="text-wrap">
+                    <span class="fa fa-phone"></span>
+                    <span class="text">Đường dây nóng: <a href="tel:0357216216">0357 216 216</a></span>
+                </p>
+                <p class="text-wrap">
+                    <span class="fa fa-envelope"></span>
+                    <span class="text"><a href="mailto:trungtambaochi@tphcm.gov.vn"><b>trungtambaochi@tphcm.gov.vn</b></a></span>
+                </p>
+                <p class="text-wrap">
+                    <span class="fa fa-facebook-f"></span>
+                    <span class="text"><a href="https://www.facebook.com/trungtambaochi.tphcm" title="Theo dõi chúng tôi trên facebook">https://www.facebook.com/trungtambaochi.tphcm</a></span>
+                </p>
+                <p class="text-wrap">
+                    <span class="fa fa-rss"></span>
+                    <span class="text"><a href="https://ttbc-hcm.gov.vn/rss.html" title="RSS">RSS</a></span>
+                </p>
+                <p class="text-wrap">
+                    Giấy phép số 89/GP-TTĐT do Sở Thông tin và Truyền thông TP. Hồ Chí Minh cấp ngày 05 tháng 12 năm 2019.
+                </p>
+                <p class="text-wrap">
+                    Chịu trách nhiệm nội dung: Nhà báo An Thị Liên Phương
+                </p>
+
+            </div>
+
+        </div>
+        <div class="col-md-6 mt-3 mt-sm-0">
+            <h3 class="title">LIÊN HỆ</h3>
+            <div class="row">
+                <form asp-area="admin" asp-controller="Contact" asp-action="Create" style="display: flex;flex-wrap: wrap;">
+                    <div class="col-6">
+                        <input asp-for="FullName" type="text" class="form-control mb-4" placeholder="Họ và tên" />
+                    </div>
+                    <div class="col-6">
+                        <input asp-for="EmailAddress" type="email" class="form-control mb-4" placeholder="Email"/>
+                    </div>
+                    <div class="col-12">
+                        <textarea asp-for="Context" rows="5" class="form-control mb-4" placeholder="Nội dung liên hệ"></textarea>
+                        <button class="float-right btn btn-primary btn-round">Gửi</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+</footer>
