@@ -88,19 +88,21 @@ namespace NewsApp.Areas.Admin.Controllers
         /// <param name="item"></param>
         /// <returns>path string to wwwroot</returns>
         [HttpPost]
-        [AllowAnonymous]
         public async Task<string> UploadedFileAsync(ArticleViewsModel item)
         {
-            string path = Path.Combine(webHostEnvironment.WebRootPath, "Resources", item.ArticleID, "Images", item.Image.FileName);
-            if (System.IO.File.Exists(path))
-            {
-                return path;
-            }
+            string path = "";
 
             try
             {
                 if (item.Image != null)
                 {
+                    // if existed
+                    path = Path.Combine(webHostEnvironment.WebRootPath, "Resources", item.ArticleID, "Images", item.Image.FileName);
+                    if (System.IO.File.Exists(path))
+                    {
+                        return path;
+                    }
+                    // else
                     string fileName = Guid.NewGuid().ToString() + '-' + item.Image.FileName;
                     string upFolder = Path.Combine(webHostEnvironment.WebRootPath, "Resources", item.ArticleID, "Images");
                     if (!Directory.Exists(upFolder))
