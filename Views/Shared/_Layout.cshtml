@@ -1,0 +1,214 @@
+﻿@using Microsoft.AspNetCore.Http;
+@using NewsApp.Models
+@using NewsApp.ViewModels
+
+@{
+    List<Article> lst_mostView = ViewBag.MostView;
+    List<Article> lst_recent = null;
+    if(TempData["Newest"]!= null)
+    {
+        lst_recent = (List<Article>)TempData["Newest"];
+        TempData.Peek("Newest");
+    }
+    
+
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - NewsApp</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/fontawesome.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.css">
+    <link href='https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/ui-lightness/jquery-ui.css' rel='stylesheet'>
+    <link rel="stylesheet" href="~/css/main.css" />
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+</head>
+<body>
+    <div class="wrapper">
+        <div class="site-mask"></div>
+        <header class="site-header" id="site-header">
+            <div class="site-header__topbar">
+                @if(Context.Request.Cookies["Name"] != null)
+                {
+                    <a asp-action="index" asp-controller="Articles" asp-area="Admin" class="text text-danger" style="float: right;">Welcome, @Context.Request.Cookies["Name"]</a>
+                }
+                else
+                {
+                    <a asp-area="Admin" asp-controller="Account" asp-action="Login" class="btn btn-success btn-round" style="float: right;">Login</a>
+                }
+            </div>
+            <div class="site-header__content">
+                <h1 class="logo">
+                    <a asp-area="" asp-action="index" asp-controller="home" title="Trung tâm báo chí TP.Hồ Chí Minh">
+                        <img class="img-fluid" src="https://static.ttbc-hcm.gov.vn/App_themes/images/logo.png" alt="Trung tâm báo chí TP.Hồ Chí Minh" title="Trung tâm báo chí TP.Hồ Chí Minh">
+                    </a>
+                </h1>
+                <div class="banner adv" id="topBanner">
+                    <!--Web: Top banner:Top banner--><div class="item-adv"> <a asp-area="" asp-action="index" asp-controller="home"><img class="img-fluid" src="https://static.ttbc-hcm.gov.vn/images/upload/admin/05042020/banner-header-1-1f88.jpg"></a></div>
+                </div>
+                <div class="site-header__tools">
+                    <a href="/tin-moi.html" title="Tin mới" class="btn-newspaper">
+                        <i class="fa fa-newspaper"></i>
+                    </a>
+                    <a href="tel:0357216216" class="btn-hotline">
+                        <i class="fa fa-phone"></i>
+                    </a>
+                    <span class="btn-search-mobile">
+                        <i class="fa fa-search" style=""></i>
+                        <i class="fa fa-times" style="display: none;"></i>
+                    </span>
+                    <span class="btn-expand">
+                        <i class="fa fa-bars"></i>
+                        <i class="fa fa-times" style="display: none;"></i>
+                    </span>
+                </div>
+            </div>
+            <ul class="nav">
+                <li class="nav-item">
+                    <a class="nav-link" asp-area="" asp-action="index" asp-controller="home" title="Trang chủ"><i class="fa fa-home"></i></a>
+                </li>
+
+
+                <li class="nav-item">
+                    <a class="nav-link" href="/danh-muc/su-kien/C0002" title="Tin tức">Sự kiện</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="/danh-muc/thong-cao-bao-chi/C0004" title="Thông cáo báo chí">Thông cáo báo chí</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="/danh-muc/diem-tin-thanh-pho/C0003" title="Điểm tin thành phố">Điểm tin thành phố</a>
+                </li>
+
+
+                <li class="nav-item ml-auto nav-search">
+                    <span class="nav-link"><i class="fa fa-search"></i><i class="fa fa-times"></i></span>
+                    <div class="nav-sub search-wrap">
+                        <div class="input-wrap">
+                             @using (Html.BeginForm("Search", "Home", FormMethod.Post, new { @class = "form-horizontal" }))
+                            {
+                                <input type="text" class="form-control" id="searchString" name="searchString" >
+                                <button style="border: none;" type="submit"><span id="btnSearch" class="fa fa-search"></span></button>
+                            }
+                        </div>
+                    </div>
+                </li>
+
+            </ul>
+            <div class="input-wrap input-wrap-mobile" id="search-mobile">
+                <input type="text" class="form-control" id="searchInput-mobile" name="searchInput">
+                <span id="btnSearchMobile" class="fa fa-search"></span>
+            </div>
+            <div class="breaking">
+                <h2 class="breaking__label">Theo dòng sự kiện:</h2>
+                <ul class="breaking__listing">
+
+                    <li class="breaking__item"><a href="#" title="DIỄN BIẾN DỊCH COVID 19">DIỄN BIẾN DỊCH COVID 19</a></li>
+
+                    <li class="breaking__item"><a href="#" title="DÂN HỎI - THÀNH PHỐ TRẢ LỜI">DÂN HỎI - THÀNH PHỐ TRẢ LỜI</a></li>
+
+                </ul>
+            </div>
+        </header>
+        <main>
+            <div class="site-content">
+                <div class="column-wrap">
+                    <div class="column-main">
+                        @RenderBody()
+                    </div>
+                    <div class="column-sidebar">
+                        <div class="p-1 mb-3 border bg-light text-center mt-3">
+                            <p class="mb-1"><i class="fal fa-phone-office mr-2"></i>Đường dây nóng</p>
+                            <h5 class="mb-0"><a class="text-danger" href="tel:0357216216"><b>0357 216 216</b></a></h5>
+                        </div>
+                       @* <div class="px-1  mb-3 border bg-warning text-center">
+                            <h5 class="mb-0"><a href="#" class="btn btn-default btn-lg"><i class="fal fa-edit mr-2"></i>Đăng ký sự kiện</a></h5>
+                        </div>*@
+                        <section class="zone">
+                            <header class="zone__header">
+                                <nav>
+                                    <div class="nav nav-pills" id="nav-tab" role="tablist">
+                                        <a class="nav-link py-1 rounded-0 active" id="nav-most-view-tab" data-toggle="tab" href="#nav-most-view" role="tab" aria-controls="nav-most-view" aria-selected="true">Đọc nhiều</a>
+                                        <a class="nav-link py-1 rounded-0" id="nav-recent-tab" data-toggle="tab" href="#nav-recent" role="tab" aria-controls="nav-recent" aria-selected="false">Mới nhất</a>
+                                    </div>
+                                </nav>
+                            </header>
+                            <div class="zone__content">
+                                <div class="tab-content" id="nav-tabContent">
+                                    <div class="tab-pane fade show active" id="nav-most-view" role="tabpanel" aria-labelledby="nav-most-view-tab">
+                                        @if (lst_mostView != null)
+                                        {
+                                            int order = 0;
+                                            foreach (var item in lst_mostView)
+                                            {
+                                                order++;
+                                                <article class="story story--rank">
+                                                    <div class="story__header">
+                                                        <h3 class="story__title"><a href="/doc/@StaticMethods.LoaiDau(item.ArticleTitle)/@item.ArticleID">@item.ArticleTitle</a></h3>
+                                                        <div class="story__order">@order.ToString()</div>
+                                                    </div>
+                                                </article>
+                                            }
+                                        }
+                                    </div>
+                                    <div class="tab-pane fade" id="nav-recent" role="tabpanel" aria-labelledby="nav-recent-tab" runat="server">
+
+                                        @if (lst_recent != null)
+                                        {
+                                            foreach (var item in lst_recent)
+                                            {
+                                                <article class="story story--border">
+                                                    <div class="story__header">
+                                                        <div class="story__meta"><i class="fa fa-clock mr-1"></i>@item.PublishTime.ToString("dd-MM-yyyy")</div>
+                                                        <h3 class="story__title"><a href="@StaticMethods.LoaiDau(item.ArticleTitle)">@item.ArticleTitle</a></h3>
+                                                    </div>
+                                                </article>
+                                            }
+                                        }
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+
+
+
+                        <!-- event calendar -->
+                        <div class="zone zone--shadow" id="CalendarCompact">
+                        </div>
+
+
+                    </div>
+
+                </div>
+            </div>
+        </main>
+        <div id="gotop" style="display: block;">
+            <a href="#site-header">
+                <i class="fa fa-angle-up"></i>
+            </a>
+        </div>
+        @*----------------------------------------------------------------------------------*@
+        @await Component.InvokeAsync("UserContact")
+
+
+
+
+        <script src="~/js/site.js"></script>
+
+        @RenderSection("Scripts", required: false)
+    </div>
+</body>
+</html>

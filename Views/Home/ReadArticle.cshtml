@@ -1,0 +1,58 @@
+﻿@using NewsApp.Models
+@using NewsApp.ViewModels
+@model Article
+@{
+    ViewData["Title"] = Model.ArticleTitle;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    Category cate = @ViewBag.Cate;
+    string displayCate = "";
+    if (cate != null)
+    {
+        displayCate = cate.CategoryName;
+    }
+
+    List<Article> related = ViewBag.Related;
+}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item active" aria-current="page">@displayCate</li>
+    </ol>
+</nav>
+
+@Html.Raw(Model.ArticleContent)
+
+<section class="zone zone--secondary">
+    <div class="zone__header">
+        <h3 class="zone__title">Tin cùng chuyên mục</h3>
+    </div>
+    <div class="zone__content">
+        <div class="row">
+
+
+            @{
+                if (related != null)
+                {
+                    foreach (var item in related)
+                    {
+                        <div class="col-md-4 mb-3">
+                            <article class="story">
+                                <figure class="story__thumb">
+                                    <a href="/doc/@StaticMethods.LoaiDau(@item.ArticleTitle)/@item.ArticleID" title="@item.ArticleTitle">
+                                        <img src="@StaticMethods.DisplayImage(item.ImageUrl)" class="img-fluid">
+                                    </a>
+                                </figure>
+                                <div class="story__header">
+                                    <h3 class="story__title"> <a href="/doc/@StaticMethods.LoaiDau(@item.ArticleTitle)/@item.ArticleID">@item.ArticleTitle</a></h3>
+                                </div>
+                            </article>
+                        </div>
+                    }
+                }
+            }
+
+
+        </div>
+    </div>
+</section>

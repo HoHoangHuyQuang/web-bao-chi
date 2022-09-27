@@ -1,0 +1,110 @@
+﻿@model IPagedList<NewsApp.Models.Article>
+@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+@using X.PagedList.Web.Common
+
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+@using (Html.BeginForm("Index", "Articles", FormMethod.Get))
+{
+    <p>
+        Find by title: @Html.TextBox("SearchString")
+        <input type="submit" value="Search" />
+    </p>
+}
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().ArticleID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().ArticleTitle)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().ArticleDescription)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().NewsCategories)
+            </th>
+                    
+            <th>
+                @Html.ActionLink("Publish time", "Index", new { sortOrder = ViewBag.DateSortParm })
+            </th>
+            <th>
+
+                @Html.ActionLink("Views", "Index", new { sortOrder = ViewBag.ViewsSortParm })
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().AuthorName)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ArticleID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ArticleTitle)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ArticleDescription)
+                </td>
+                <td>
+
+                    <span>
+                        @foreach (var tag in item.NewsCategories.ToList())
+                        {
+                            <i>@tag.Category.CategoryName, </i>
+                        }
+                    </span>
+                </td>
+                          
+                <td>
+                    @Html.DisplayFor(modelItem => item.PublishTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ViewsCount)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AuthorName)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.ArticleID">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.ArticleID">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.ArticleID">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<br />
+
+
+@Html.PagedListPager( Model, page => Url.Action("Index", new {
+                                        page,sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter
+                        }),
+                     new PagedListRenderOptions{
+                        PageClasses = new string[] { "page-link" },
+                        UlElementClasses = new string[] { "pagination" },
+                        LiElementClasses = new string[] { "page-item" },
+                        DisplayItemSliceAndTotal = false,
+                        DisplayLinkToIndividualPages = false,
+				       	DisplayPageCountAndCurrentLocation = true
+
+                        
+})

@@ -1,0 +1,82 @@
+﻿@using Microsoft.AspNetCore.Http;
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - NewsApp</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/fontawesome.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.css">
+    <link href='https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/ui-lightness/jquery-ui.css' rel='stylesheet'>
+    <link rel="stylesheet" href="~/css/main.css" />
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+</head>
+
+<body>
+    <div class="wrapper">
+        <header class="site-header" id="site-header">
+            <div class="site-header__topbar"> </div>
+            <div class="site-header__content">
+                <h1 class="logo">
+                    <a  asp-area="" asp-action="index" asp-controller="home" title="Trung tâm báo chí TP.Hồ Chí Minh">
+                        <img class="img-fluid" src="https://static.ttbc-hcm.gov.vn/App_themes/images/logo.png" alt="Trung tâm báo chí TP.Hồ Chí Minh" title="Trung tâm báo chí TP.Hồ Chí Minh">
+                    </a>
+                </h1>
+            </div>
+            <ul class="nav">
+                <li class="nav-item">
+                    <a class="nav-link" asp-area="/" asp-action="index" asp-controller="home" title="Trang chủ"><i class="fa fa-home"></i></a>
+                </li>
+                @if (Context.Request.Cookies["_User"] != null)
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" asp-action="index" asp-controller="Role" asp-area="Admin">Role manager</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" asp-action="index" asp-controller="Account" asp-area="Admin">Account manager</a>
+                    </li>
+                }
+                <li class="nav-item">
+                    <a class="nav-link" asp-action="index" asp-controller="Articles" asp-area="Admin">Article manager</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" asp-action="index" asp-controller="Category" asp-area="Admin">Category manager</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" asp-action="index" asp-controller="Contact" asp-area="Admin">Contact manager</a>
+                </li>
+
+
+            </ul>
+        </header>
+
+
+
+        <div class="container">
+            <main role="main" class="pb-3">
+                @RenderBody()
+            </main>
+        </div>
+
+        <footer class="border-top footer text-muted">
+            <div class="container">
+               <a asp-area="Admin" asp-controller="Account" asp-action="Logout" class="btn btn-danger btn-round" style="float: right;">Log Off</a>
+            </div>
+        </footer>
+    </div>
+
+    <script src="~/js/site.js"></script>
+    @RenderSection("Scripts", required: false)
+
+</body>
+</html>
